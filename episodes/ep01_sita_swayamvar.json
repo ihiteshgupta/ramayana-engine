@@ -1,0 +1,236 @@
+{
+  "episode": {
+    "id": "ep01_sita_swayamvar",
+    "title": "The Breaking of Shiva's Bow",
+    "duration_target": "4-5 min",
+    "resolution": { "width": 1920, "height": 1080 },
+    "narration": {
+      "voice": "en-US-GuyNeural",
+      "rate": "-5%"
+    }
+  },
+
+  "assets": {
+    "backgrounds": {
+      "court_hall": "assets/backgrounds/janaka_court.png"
+    },
+    "characters": {
+      "rama": { "path": "assets/characters/rama/spritesheet.json" },
+      "sita": { "path": "assets/characters/sita/spritesheet.json" },
+      "janaka": { "path": "assets/characters/janaka/spritesheet.json" },
+      "vishwamitra": { "path": "assets/characters/vishwamitra/spritesheet.json" },
+      "king_generic": { "path": "assets/characters/king_generic/spritesheet.json" }
+    },
+    "props": {
+      "shiva_bow": "assets/props/shiva_bow.png",
+      "garland": "assets/props/garland.png"
+    },
+    "music": {
+      "court_ambient": "assets/audio/music/court_ambient.mp3",
+      "tension_build": "assets/audio/music/tension_drums.mp3",
+      "triumph": "assets/audio/music/triumph_sitar.mp3"
+    },
+    "sfx": {
+      "crowd_murmur": "assets/audio/sfx/crowd_murmur.wav",
+      "bow_crack": "assets/audio/sfx/bow_crack.wav",
+      "crowd_gasp": "assets/audio/sfx/crowd_gasp.wav",
+      "crowd_cheer": "assets/audio/sfx/crowd_cheer.wav",
+      "footsteps": "assets/audio/sfx/footsteps.wav"
+    }
+  },
+
+  "scenes": [
+    {
+      "id": "scene_01_court_intro",
+      "background": "court_hall",
+      "music": { "track": "court_ambient", "volume": 0.3, "fade_in": 2000 },
+      "camera": { "x": 0, "y": 0, "zoom": 1.0 },
+      "characters_on_stage": [
+        { "id": "janaka", "position": { "x": 960, "y": 500 }, "state": "sitting_throne" },
+        { "id": "king1", "ref": "king_generic", "position": { "x": 300, "y": 650 }, "state": "standing" },
+        { "id": "king2", "ref": "king_generic", "position": { "x": 500, "y": 670 }, "state": "standing" },
+        { "id": "king3", "ref": "king_generic", "position": { "x": 1400, "y": 660 }, "state": "standing" }
+      ],
+      "props_on_stage": [
+        { "id": "shiva_bow", "position": { "x": 960, "y": 700 }, "scale": 1.5 }
+      ],
+      "beats": [
+        {
+          "narration": "In the ancient city of Mithila, King Janaka held a great assembly in his magnificent court. Kings and princes from across the land had gathered, drawn by the promise of an extraordinary challenge.",
+          "actions": [
+            { "type": "camera_pan", "to": { "x": 100, "y": 0 }, "duration": 4000 }
+          ]
+        },
+        {
+          "narration": "At the centre of the hall rested the divine bow of Lord Shiva, Pinaka. A weapon of immense power, so heavy that no mortal had ever been able to lift it.",
+          "actions": [
+            { "type": "camera_zoom", "to": 1.4, "duration": 3000 }
+          ]
+        },
+        {
+          "narration": "Janaka rose from his throne and addressed the assembly. Whoever among you can lift this sacred bow and string it shall win the hand of my daughter, Princess Sita, in marriage.",
+          "actions": [
+            { "type": "character_state", "character": "janaka", "state": "standing" },
+            { "type": "camera_zoom", "to": 1.0, "duration": 2000 }
+          ]
+        }
+      ]
+    },
+
+    {
+      "id": "scene_02_kings_fail",
+      "background": "court_hall",
+      "music": { "track": "tension_build", "volume": 0.25, "fade_in": 1500 },
+      "camera": { "x": 0, "y": 0, "zoom": 1.0 },
+      "characters_on_stage": [
+        { "id": "janaka", "position": { "x": 960, "y": 500 }, "state": "sitting_throne" },
+        { "id": "king1", "ref": "king_generic", "position": { "x": 300, "y": 650 }, "state": "standing" },
+        { "id": "king2", "ref": "king_generic", "position": { "x": 500, "y": 670 }, "state": "standing" }
+      ],
+      "props_on_stage": [
+        { "id": "shiva_bow", "position": { "x": 960, "y": 700 }, "scale": 1.5 }
+      ],
+      "beats": [
+        {
+          "narration": "One by one, the mightiest kings stepped forward. Each approached the bow with confidence, certain they would be the one to claim the prize.",
+          "actions": [
+            { "type": "character_move", "character": "king1", "to": { "x": 800, "y": 680 }, "duration": 3000 },
+            { "type": "sfx", "clip": "footsteps", "volume": 0.5 }
+          ]
+        },
+        {
+          "narration": "But one after another, they failed. The bow would not budge. Not even the greatest warriors could lift it from its resting place.",
+          "actions": [
+            { "type": "character_state", "character": "king1", "state": "straining" },
+            { "type": "sfx", "clip": "crowd_murmur", "delay": 1000, "volume": 0.4 }
+          ]
+        },
+        {
+          "narration": "A murmur of despair spread through the assembly. King Janaka looked on with growing sadness, fearing that no one worthy of Sita would ever come.",
+          "actions": [
+            { "type": "character_move", "character": "king1", "to": { "x": 300, "y": 650 }, "duration": 2000 },
+            { "type": "character_state", "character": "king1", "state": "retreating" }
+          ]
+        }
+      ]
+    },
+
+    {
+      "id": "scene_03_rama_enters",
+      "background": "court_hall",
+      "camera": { "x": 0, "y": 0, "zoom": 1.0 },
+      "characters_on_stage": [
+        { "id": "janaka", "position": { "x": 960, "y": 500 }, "state": "sitting_throne" },
+        { "id": "vishwamitra", "position": { "x": 200, "y": 600 }, "state": "standing" },
+        { "id": "rama", "position": { "x": 100, "y": 750 }, "state": "idle" },
+        { "id": "sita", "position": { "x": 1600, "y": 450 }, "state": "watching" }
+      ],
+      "props_on_stage": [
+        { "id": "shiva_bow", "position": { "x": 960, "y": 700 }, "scale": 1.5 }
+      ],
+      "beats": [
+        {
+          "narration": "Then the great sage Vishwamitra, who sat among the guests, turned to the young prince beside him. Rama, he said with a quiet smile, go and try your hand at the bow.",
+          "actions": [
+            { "type": "character_state", "character": "vishwamitra", "state": "nodding" },
+            { "type": "camera_pan", "to": { "x": -200, "y": 0 }, "duration": 2000 }
+          ]
+        },
+        {
+          "narration": "Prince Rama, son of King Dasharatha of Ayodhya, rose with quiet grace. He was young, barely past his sixteenth year, yet he moved with the calm assurance of one who knows no fear.",
+          "actions": [
+            { "type": "character_state", "character": "rama", "state": "walking" },
+            { "type": "character_move", "character": "rama", "to": { "x": 700, "y": 720 }, "duration": 4000 },
+            { "type": "sfx", "clip": "footsteps", "volume": 0.3 },
+            { "type": "camera_pan", "to": { "x": 0, "y": 0 }, "duration": 3000 }
+          ]
+        },
+        {
+          "narration": "From the balcony above, Princess Sita watched the young prince approach. Their eyes met for a brief moment, and in that glance, something unspoken passed between them.",
+          "actions": [
+            { "type": "camera_zoom", "to": 1.2, "duration": 2000 }
+          ]
+        }
+      ]
+    },
+
+    {
+      "id": "scene_04_the_breaking",
+      "background": "court_hall",
+      "camera": { "x": 0, "y": 0, "zoom": 1.2 },
+      "characters_on_stage": [
+        { "id": "rama", "position": { "x": 900, "y": 720 }, "state": "idle" },
+        { "id": "janaka", "position": { "x": 960, "y": 500 }, "state": "sitting_throne" },
+        { "id": "sita", "position": { "x": 1600, "y": 450 }, "state": "watching" }
+      ],
+      "props_on_stage": [
+        { "id": "shiva_bow", "position": { "x": 960, "y": 700 }, "scale": 1.5 }
+      ],
+      "beats": [
+        {
+          "narration": "Rama approached the great bow and paused. He bowed his head in reverence to Lord Shiva, offering a silent prayer. Then, with a single hand, he reached down.",
+          "actions": [
+            { "type": "character_state", "character": "rama", "state": "lifting" },
+            { "type": "camera_zoom", "to": 1.5, "duration": 3000 }
+          ]
+        },
+        {
+          "narration": "As though it weighed nothing at all, Rama lifted the divine bow from the earth. The entire assembly held its breath. Not a sound could be heard in the great hall.",
+          "actions": [
+            { "type": "sfx", "clip": "crowd_gasp", "volume": 0.6 }
+          ]
+        },
+        {
+          "narration": "With effortless strength, Rama drew the string of the mighty Pinaka. The bow bent to his will, its ancient wood groaning under the force.",
+          "actions": [
+            { "type": "character_state", "character": "rama", "state": "drawing_bow" }
+          ]
+        },
+        {
+          "narration": "And then, with a sound like thunder splitting the heavens, the bow of Shiva broke in two. The crack echoed through the hall, through the city, and across the very sky.",
+          "actions": [
+            { "type": "sfx", "clip": "bow_crack", "volume": 1.0 },
+            { "type": "camera_shake", "intensity": 10, "duration": 500 },
+            { "type": "sfx", "clip": "crowd_gasp", "delay": 600, "volume": 0.8 }
+          ]
+        }
+      ]
+    },
+
+    {
+      "id": "scene_05_garland",
+      "background": "court_hall",
+      "music": { "track": "triumph", "volume": 0.4, "fade_in": 1000 },
+      "camera": { "x": 0, "y": 0, "zoom": 1.0 },
+      "characters_on_stage": [
+        { "id": "rama", "position": { "x": 900, "y": 720 }, "state": "triumphant" },
+        { "id": "sita", "position": { "x": 1600, "y": 450 }, "state": "idle" },
+        { "id": "janaka", "position": { "x": 960, "y": 500 }, "state": "rejoicing" }
+      ],
+      "props_on_stage": [],
+      "beats": [
+        {
+          "narration": "A moment of stunned silence. Then the hall erupted in joy. King Janaka leapt from his throne, tears streaming down his face. A worthy husband for Sita had been found at last.",
+          "actions": [
+            { "type": "character_state", "character": "janaka", "state": "rejoicing" },
+            { "type": "sfx", "clip": "crowd_cheer", "volume": 0.7 }
+          ]
+        },
+        {
+          "narration": "Princess Sita descended from the balcony, carrying a garland of fresh jasmine flowers. She walked toward Rama, her steps steady, her heart full.",
+          "actions": [
+            { "type": "character_state", "character": "sita", "state": "walking" },
+            { "type": "character_move", "character": "sita", "to": { "x": 950, "y": 720 }, "duration": 4000 }
+          ]
+        },
+        {
+          "narration": "With gentle hands, Sita placed the garland around Rama's neck, choosing him as her husband for all lifetimes to come. And thus began the eternal bond of Rama and Sita, a love that would be tested by fate, but never broken.",
+          "actions": [
+            { "type": "character_state", "character": "sita", "state": "garlanding" },
+            { "type": "camera_zoom", "to": 1.3, "duration": 3000 }
+          ]
+        }
+      ]
+    }
+  ]
+}
