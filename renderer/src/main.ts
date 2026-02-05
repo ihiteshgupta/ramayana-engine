@@ -19,7 +19,7 @@ interface WindowAPI {
 
 interface AudioCue {
   beat: number;
-  type: "sfx" | "music";
+  type: "sfx" | "music" | "narration_mark";
   clip: string;
   wall_clock_ms: number;
 }
