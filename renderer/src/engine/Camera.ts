@@ -60,8 +60,8 @@ export class Camera {
       const offsetX = (Math.random() - 0.5) * 2 * intensity;
       const offsetY = (Math.random() - 0.5) * 2 * intensity;
       this.stage.position.set(
-        -(originalX + offsetX) * this.zoom + 960,
-        -(originalY + offsetY) * this.zoom + 540
+        -(originalX + offsetX) * this.zoom + 960 * (1 - this.zoom),
+        -(originalY + offsetY) * this.zoom + 540 * (1 - this.zoom)
       );
       await new Promise((r) => setTimeout(r, 50));
     }
@@ -73,11 +73,12 @@ export class Camera {
   }
 
   private applyTransform(): void {
-    // Center the viewport: offset by half the screen, then apply camera position and zoom
+    // Camera (0,0) shows world (0,0) at screen top-left.
+    // Zoom centers on viewport midpoint (960, 540).
     this.stage.scale.set(this.zoom);
     this.stage.position.set(
-      -this.x * this.zoom + 960,
-      -this.y * this.zoom + 540
+      -this.x * this.zoom + 960 * (1 - this.zoom),
+      -this.y * this.zoom + 540 * (1 - this.zoom)
     );
   }
 }

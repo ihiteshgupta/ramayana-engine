@@ -45,6 +45,18 @@ async function init() {
   });
   document.body.appendChild(app.canvas);
 
+  // Scale canvas to fit browser viewport while maintaining 1920x1080 aspect ratio
+  function fitCanvas() {
+    const canvas = app.canvas as HTMLCanvasElement;
+    const scaleX = window.innerWidth / 1920;
+    const scaleY = window.innerHeight / 1080;
+    const scale = Math.min(scaleX, scaleY);
+    canvas.style.width = `${1920 * scale}px`;
+    canvas.style.height = `${1080 * scale}px`;
+  }
+  fitCanvas();
+  window.addEventListener("resize", fitCanvas);
+
   // Load episode script from URL params or default
   const params = new URLSearchParams(window.location.search);
   const scriptUrl = params.get("script") || "/episodes/ep01_sita_swayamvar.json";
