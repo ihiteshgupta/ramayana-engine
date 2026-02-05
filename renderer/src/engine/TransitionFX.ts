@@ -1,14 +1,24 @@
-import { Container, Graphics } from "pixi.js";
+import { Container, Graphics, Sprite, Texture } from "pixi.js";
 import gsap from "gsap";
+import { drawVignette } from "./art/vignette";
 
 /**
- * TransitionFX handles visual transitions between scenes.
- * Renders a full-screen overlay and animates its opacity.
+ * TransitionFX handles visual transitions and cinematic vignette.
  */
 export class TransitionFX {
   private overlay: Graphics;
 
   constructor(stage: Container, width: number, height: number) {
+    // Vignette layer (always visible, behind the transition overlay)
+    const vignetteCanvas = document.createElement("canvas");
+    vignetteCanvas.width = width;
+    vignetteCanvas.height = height;
+    drawVignette(vignetteCanvas.getContext("2d")!, width, height);
+    const vignetteSprite = new Sprite(Texture.from(vignetteCanvas));
+    vignetteSprite.zIndex = 9998;
+    stage.addChild(vignetteSprite);
+
+    // Transition overlay (fade in/out)
     this.overlay = new Graphics();
     this.overlay.rect(0, 0, width, height);
     this.overlay.fill(0x000000);

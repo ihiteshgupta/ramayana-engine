@@ -1,27 +1,22 @@
-import { Container, Sprite, Texture, Assets } from "pixi.js";
+import { Container, Sprite, Texture } from "pixi.js";
 import gsap from "gsap";
+import { drawCharacter } from "./art/characters";
 
-interface SpriteSheetMeta {
-  path?: string;
-  states?: Record<string, { frames: number[]; fps: number }>;
-}
+/** Character sprite size (2x detail for zoom). */
+const CHAR_W = 128;
+const CHAR_H = 256;
 
 /**
- * CharacterSprite manages a single character's sprite sheet,
- * animation states, and movement.
- *
- * Each character has named states (idle, walking, lifting, etc.)
- * with frame indices into the sprite sheet texture atlas.
+ * CharacterSprite manages a single character's silhouette art,
+ * state-based pose changes, and movement.
  */
 export class CharacterSprite {
   private id: string;
   private container: Container;
   private sprite: Sprite;
-  private textures: Map<string, Texture[]> = new Map();
+  private canvas: HTMLCanvasElement;
+  private ctx: CanvasRenderingContext2D;
   private currentState: string = "idle";
-  private animationTimer: ReturnType<typeof setInterval> | null = null;
-  private currentFrame: number = 0;
-  private fps: number = 10;
 
   constructor(id: string) {
     this.id = id;
@@ -31,52 +26,28 @@ export class CharacterSprite {
 
     // Anchor at bottom-center (feet position)
     this.sprite.anchor.set(0.5, 1.0);
+
+    // Persistent canvas for state redraws
+    this.canvas = document.createElement("canvas");
+    this.canvas.width = CHAR_W;
+    this.canvas.height = CHAR_H;
+    this.ctx = this.canvas.getContext("2d")!;
   }
 
-  async load(assetRef: unknown): Promise<void> {
-    // TODO: Load actual texture atlas from spritesheet.json
-    // For now, create a colored placeholder rectangle
-    const meta = assetRef as SpriteSheetMeta | undefined;
+  async load(_assetRef: unknown): Promise<void> {
+    this.redraw();
+    console.log(`[CharacterSprite] Loaded: ${this.id}`);
+  }
 
-    if (meta?.path) {
-      // Load real sprite sheet
-      // const atlas = await Assets.load(meta.path);
-      // Parse states from meta.states
+  private redraw(): void {
+    if (!drawCharacter(this.ctx, this.id, this.currentState, CHAR_W, CHAR_H)) {
+      // Fallback for unknown characters
+      this.ctx.clearRect(0, 0, CHAR_W, CHAR_H);
+      this.ctx.fillStyle = "#888";
+      this.ctx.fillRect(CHAR_W / 4, CHAR_H / 4, CHAR_W / 2, CHAR_H / 2);
     }
-
-    // Placeholder: create a 64x128 colored sprite
-    const canvas = document.createElement("canvas");
-    canvas.width = 64;
-    canvas.height = 128;
-    const ctx = canvas.getContext("2d")!;
-
-    // Color based on character id
-    const colors: Record<string, string> = {
-      rama: "#2E5090",
-      sita: "#C04040",
-      janaka: "#D4A017",
-      vishwamitra: "#8B4513",
-      king_generic: "#606060",
-    };
-    ctx.fillStyle = colors[this.id] || "#888888";
-    ctx.fillRect(0, 0, 64, 128);
-
-    // Head circle
-    ctx.fillStyle = "#DEB887";
-    ctx.beginPath();
-    ctx.arc(32, 20, 16, 0, Math.PI * 2);
-    ctx.fill();
-
-    // Label
-    ctx.fillStyle = "#FFFFFF";
-    ctx.font = "10px sans-serif";
-    ctx.textAlign = "center";
-    ctx.fillText(this.id, 32, 75);
-
-    const texture = Texture.from(canvas);
-    this.sprite.texture = texture;
-
-    console.log(`[CharacterSprite] Loaded placeholder for: ${this.id}`);
+    this.sprite.texture = Texture.from(this.canvas);
+    this.sprite.texture.source.update();
   }
 
   getContainer(): Container {
@@ -88,11 +59,9 @@ export class CharacterSprite {
   }
 
   setState(state: string): void {
+    if (this.currentState === state) return;
     this.currentState = state;
-    this.currentFrame = 0;
-
-    // TODO: Switch to actual animation frames for this state
-    // For now, just log the state change
+    this.redraw();
     console.log(`[CharacterSprite:${this.id}] State → ${state}`);
   }
 
@@ -120,7 +89,6 @@ export class CharacterSprite {
   }
 
   destroy(): void {
-    if (this.animationTimer) clearInterval(this.animationTimer);
     this.container.destroy({ children: true });
   }
 }
